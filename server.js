@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const port = 8081;
+const models = require("./models");
 const app = express();
 
 app.use(express.json()); //json형식을 처리할 수 있도록 설정
@@ -55,4 +56,14 @@ app.get("/products/:id/events/:eventId", (req, res) => {
 
 app.listen(port, () => {
   console.log("그랩의 쇼핑몰 서버가 돌아가고 있습니다.");
+  models.sequelize
+    .sync() //--sequlize.sync--우리가 앞으로 여기 모델스에 우리가 어떤 테이블 관련된 모델링에 필요한 정보를 넣을거에요. 그때 싱크를 시키겠다. 그래서 /models의 index.js에 입력한 정보를 데이터베이스와 동기화 시켜서 예를 들어 /models의 index.js에서 상품과 관련된 테이블을 만들었다. 하면은 데이터베이스에서 상품과 관련된 테이블을 하나 만들어 줄 거에요 그런식으로 동기화를 시켜주고요
+    .then(() => {
+      console.log("DB 연결 성공!");
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log("DB 연결 에러");
+      process.exit(); //서버 실행할 때 listen상태가 지속되는데 어차피 에러났으면 db랑 연결이 안되는 상태니까 종료시킴
+    });
 });
