@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const port = 8081;
+const port = process.env.PORT || "8081"; //대충 정해진 포트를 쓰거나 아니라면 8081쓴다는 뜻
 const models = require("./models");
 const multer = require("multer");
 const upload = multer({
